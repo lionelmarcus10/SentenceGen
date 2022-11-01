@@ -1,0 +1,3 @@
+C:/Users/togla/OneDrive/Bureau/SentenceGen/cmake-build-debug/CMakeFiles/SentenceGen.dir
+C:/Users/togla/OneDrive/Bureau/SentenceGen/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/togla/OneDrive/Bureau/SentenceGen/cmake-build-debug/CMakeFiles/rebuild_cache.dir
