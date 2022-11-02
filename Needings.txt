@@ -8,7 +8,6 @@ Graphique interface
     Partie dictionnaire:
         - fonction pour afficher tout un dictionnaire ( avec le lien du dico en paramètre  ) ✔️
         - une fonction pour afficher les differentes colonnes d'un fichier ( 1, 2,3 ) ✔️
-        - fonction pour afficher une ou plusieurs lignes d'un dictionnaire ( en fonction du paramètre )
         - fonction pour trouver les mots fléchis d'un mot ( la base en paramètre ) ✔
         - fonction pour trouver la base d'un mot ( le fléchis en paramètre ) ✔
         - fonction pour savoir si un mot se trouve ou pas dans le dictionnaire ( paramètre : colonbe base/ flechis )
@@ -35,7 +34,7 @@ Graphique interface
         - Faire attention aux auxilières et verbes d'etat -------------> bonus facultatif
         - fonction pour conjuguer et faire les accords
 - Structure
-    - creer la structure de l'arbre et des noeuds
+    - creer la structure de l'arbre et des noeuds ✔
     - s'arranger pour que le remplissage de la structure se fasse par ordre alphabétique et qu'il n'y ai pas de répétition
 
 
@@ -44,20 +43,20 @@ Graphique interface
 ********
 Objectif actuel (3)
 
-- fonction pour afficher une ou plusieurs lignes d'un dictionnaire ( en fonction du paramètre )
+
 - fonction pour savoir si un mot se trouve ou pas dans le dictionnaire ( paramètre : colonne base/ flechis; mot; type)
 - fonction de recherche à partir de forme ( partie de la colonne 3 comme IPRE / fut....)
 -- refaire toute ces fonctions pour avoir des return et non des void + avec les caractères spéciaux et tous les paramètres
 -  Fonction pour
-    1- parser la 3eme colonne et obtenir des uniq value
+    1- parser la 3eme colonne et obtenir des uniq value ✔
     2- pour la rendre compréhensible / faire des phrases avec la 3eme colonne
 
 
-- creer la structure de l'arbre et des noeuds
-- Fonction pour creer un arbre binaire et nair partir du type ( nom , adverbe.....)
-- fonction pour creer un arbre binaire et nair
+
+- Fonction pour creer un arbre nair partir du type ( nom , adverbe.....)
+- fonction pour creer un arbre nair
 - Fonction pour remplir un arbre vide
 
-brouillon ( papier )
+brouillon (papier)
 -Creer differents modèle de phrase
 ********

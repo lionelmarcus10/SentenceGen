@@ -4,4 +4,4 @@ project(SentenceGen C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(SentenceGen
-        main.c)
+        main.c struct.c struct.h)

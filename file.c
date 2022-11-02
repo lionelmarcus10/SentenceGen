@@ -108,3 +108,201 @@ void showBaseByVariantInFile(char * variant){
     }
     fclose(Dico);
 };
+// fonction pour afficher la nature des mots sur chaque colonne : uniq values
+// de varier le link du file
+void thirColFirstParserShow(){
+    int column = 3;
+    char * dico = "../test.txt";
+    FILE * Dico = fopen(dico,"r");
+    if(!Dico) {
+        perror("File opening failed");
+    }else{
+        char buf[200];
+        // creer un tableau pour stocker les differents types de chaque ligne
+        char **tableau = NULL;
+        int nbr = 10; //287976; 10
+        tableau = malloc( sizeof(char*) * nbr);
+        // allouer une taille à chaque case du tableau
+        for (int i=0; i<nbr;i++) {
+            tableau[i] = malloc(sizeof(char)*100);
+        }
+        // parcourir chaque ligne recuperer chaque type puis le mettre dans le tableau
+        int k =0;
+        while (fgets(buf, sizeof buf, Dico) != NULL){
+            char *current_column = strtok(buf, "\t");
+            int col = 1;
+            while(col < column) {
+                current_column = strtok(NULL, "\t");
+                col++;
+            }
+            // mettre les types dans le tableau
+            char *word_Type = strtok(current_column,":");
+            int cleaner =0;
+            // eviter les redondances
+            char*temp = malloc(sizeof(char)*100);
+            sprintf(temp,"%s",word_Type);
+            for(int i =0;i<k;i++){
+              if (strcmp(tableau[i],temp) == 0)
+                 cleaner = 1;
+            }
+            if(cleaner == 0){
+              sprintf(tableau[k],"%s",temp);
+              k++;
+            }
+        };
+        nbr = k;
+        // afficher le nouveau tableau
+        for(int v= 0;v<k;v++){
+            printf("%s\n",tableau[v]);
+        }
+    }
+    fclose(Dico);
+};
+
+// supprimer les redondances dans un tableau de char ** contenant des char *
+// pouvoir calculer nbr dans la fonction elle meme
+char ** occDeleter(char ** tableau,int nbr){
+    int clean;
+    do{
+        clean=1;
+        for(int i=0 ; i<nbr-1; i++ ){
+            for(int j=i+1;j<nbr;j++){
+                if (strcmp(tableau[i],tableau[j]) == 0)
+                {
+                    for(int k=j;k<nbr;k++)
+                        tableau[k] = tableau[k+1];
+                    //free(tableau[nbr]);
+                    clean = 0;
+                    nbr--;
+                }
+            }
+        }
+    }while (clean!=1);
+    for(int v= 0;v<nbr;v++)
+        printf("%s",tableau[v]);
+    return tableau;
+};
+
+// fonction pour afficher les differents types de conjugaison des mots sur chauque colonne : uniq values
+// de varier le link du file
+void thirColFirstParser2Show(){
+    int column = 3;
+    char * dico = "dictionnaire_non_accentue.txt";
+    FILE * Dico = fopen(dico,"r");
+    if(!Dico) {
+        perror("File opening failed");
+    }else{
+        char buf[200];
+        // creer un tableau pour stocker les differents types de chaque ligne
+        char **tableau = NULL;
+        int nbr = 287976; //287976; 10
+        tableau = malloc( sizeof(char*) * nbr);
+        // allouer une taille à chaque case du tableau
+        for (int i=0; i<nbr;i++) {
+            tableau[i] = malloc(sizeof(char)*100);
+        }
+        // parcourir chaque ligne recuperer chaque type puis le mettre dans le tableau
+        int k =0;
+        while (fgets(buf, sizeof buf, Dico) != NULL){
+            char *current_column = strtok(buf, "\t");
+            int col = 1;
+            while(col < column) {
+                current_column = strtok(NULL, "\t");
+                col++;
+            }
+            // mettre les types dans le tableau
+            char *word_Type = strtok(current_column,":");
+            word_Type = strtok(NULL,"+");
+            // supprimer les occurences
+            char * start = malloc(100*sizeof(char));
+            while(word_Type != NULL){
+                char * temper = malloc(100*sizeof(char));
+                sprintf(temper,"%s ",word_Type);
+                strcat(start,temper);
+                word_Type = strtok(NULL,"+");
+            }
+            int cleaner =  0;
+            // eviter les redondances
+            char*temp = malloc(sizeof(char)*100);
+            sprintf(temp,"%s",start);
+            for(int i =0;i<k;i++){
+                if (strcmp(tableau[i],temp) == 0)
+                    cleaner = 1;
+            }
+            if(cleaner == 0){
+                sprintf(tableau[k],"%s",temp);
+                k++;
+            }
+        };
+        nbr = k;
+        for(int v= 0;v<nbr;v++)
+            printf("%s",tableau[v]);
+    }
+    fclose(Dico);
+}
+
+/*  -------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+// fonction pour extraire tous les mots appartenant à un type donné dans un fichier et retourner une liste
+char ** extractWordByType(char* type){
+    char * dico = "dictionnaire_non_accentue.txt";
+    FILE * Dico = fopen(dico,"r");
+    if(!Dico) {
+        perror("File opening failed");
+    }else{
+        char buf[200];
+        // creer un tableau
+        char **tableau = NULL;
+        int nbr = 287976; //287976; 10
+        tableau = malloc( sizeof(char*) * nbr);
+        // allouer une taille à chaque case du tableau
+        for (int i=0; i<nbr;i++) {
+            tableau[i] = malloc(sizeof(char)*100);
+        }
+        // extraire les formes de base pour le type
+        int k=0;
+        while (fgets(buf, sizeof buf, Dico) != NULL){
+            char *current_column = strtok(buf, "\t");
+            current_column = strtok(NULL, "\t");
+            char * temp = malloc(100*sizeof(char));
+            sprintf(temp,"%s",current_column);
+            current_column = strtok(NULL, "\t");
+            strtok(current_column, ":");
+            // verifier si le type correspond
+            if(strcmp(current_column,type) == 0){
+                // verifier si il n'existe pas encore dans le tableau puis ajouter
+                //printf("%s\n",temp);
+                int clean = 0;
+                // eviter les redondances
+                for(int i =0;i<k;i++){
+                    if (strcmp(tableau[i],temp) == 0)
+                        clean = 1;
+                }
+                if(clean == 0){
+                    sprintf(tableau[k],"%s",temp);
+                    k++;
+                }
+            }
+            free(temp);
+        }
+        for(int b=k;b<nbr;b++){
+            tableau[k] = NULL;
+            free(tableau[k]);
+        };
+        fclose(Dico);
+        return tableau;
+    }
+};
+
+//fonction pour classer un tableau par ordre alphabétique
+//fonction pour generer un nombre en fonction du caractère alphabétique
+
+/*
+ * prendre le dictionnaire ✔
+ * extraire tous les mots de base pour chaque type ✔
+ * les classer par ordre alphabétique
+ * les mettre dans un arbre n_air correspondant à leur type
+ * choisir un mot au hasard
+ * verifier si il à une variante
+ * faire le tableau de la variante si oui ( lister toute les variantes dans un autre arbre n_air)
+ * selectionner une variante pour faire une phrase
+ * */
