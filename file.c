@@ -8,8 +8,6 @@
 #include <string.h>
 
 // fonction pour lire un fichier
-// autoriser les caracteères spéciaux et mettre en parametre le fichier ou moyen
-// de varier le link du file
 void showFile(){
 
     const char * dico = "../test.txt";
@@ -26,8 +24,6 @@ void showFile(){
 };
 
 // fonction pour afficher les colonnes d'un fichier ( chaque colonne séparé par une tabulation)
-// autoriser les caracteères spéciaux et mettre en parametre le fichier ou moyen
-// de varier le link du file
 void showFileColumn(int column){
 
     char * dico = "../test.txt";
@@ -50,8 +46,6 @@ void showFileColumn(int column){
 };
 
 // fonction pour trouver les formes fléchis d'un mot à partir de la base et afficher
-// autoriser les caracteères spéciaux et mettre en parametre le fichier ou moyen
-// de varier le link du file
 void showVariantByBaseInFile(char * base){
 
     char * dico = "../test.txt";
@@ -80,8 +74,6 @@ void showVariantByBaseInFile(char * base){
 };
 
 //- fonction pour trouver la base d'un mot à partir de la forme fléchis et afficher
-// autoriser les caracteères spéciaux et mettre en parametre le fichier ou moyen
-// de varier le link du file
 void showBaseByVariantInFile(char * variant){
 
     char * dico = "../test.txt";
@@ -109,7 +101,6 @@ void showBaseByVariantInFile(char * variant){
     fclose(Dico);
 };
 // fonction pour afficher la nature des mots sur chaque colonne : uniq values
-// de varier le link du file
 void thirColFirstParserShow(){
     int column = 3;
     char * dico = "../test.txt";
@@ -160,7 +151,6 @@ void thirColFirstParserShow(){
 };
 
 // supprimer les redondances dans un tableau de char ** contenant des char *
-// pouvoir calculer nbr dans la fonction elle meme
 char ** occDeleter(char ** tableau,int nbr){
     int clean;
     do{
@@ -184,7 +174,6 @@ char ** occDeleter(char ** tableau,int nbr){
 };
 
 // fonction pour afficher les differents types de conjugaison des mots sur chauque colonne : uniq values
-// de varier le link du file
 void thirColFirstParser2Show(){
     int column = 3;
     char * dico = "dictionnaire_non_accentue.txt";
@@ -244,7 +233,7 @@ void thirColFirstParser2Show(){
 /*  -------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 // fonction pour extraire tous les mots appartenant à un type donné dans un fichier et retourner une liste
 char ** extractWordByType(char* type){
-    char * dico = "dictionnaire_non_accentue.txt";
+    char * dico = "test.txt";
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");
@@ -294,15 +283,51 @@ char ** extractWordByType(char* type){
 };
 
 //fonction pour classer un tableau par ordre alphabétique
+char** chainecomp(char** str_ing1){
+    int temp1=0;
+    char** newtab;
+    while(temp1 == 0 ){
+        temp1 = 1 ;
+        int i = 1 ;
+        while(str_ing1[i] != NULL ){
+            if(strcmp(str_ing1[i-1],str_ing1[i]) > 0){
+                char* temp3 = str_ing1[i-1];
+                str_ing1[i-1] = str_ing1[i];
+                str_ing1[i] = temp3;
+                temp3 = NULL;
+                free(temp3);
+                temp1 = 0;
+            }
+            i++;
+        }
+
+    }
+    return str_ing1 ;
+}
+
 //fonction pour generer un nombre en fonction du caractère alphabétique
 
 /*
  * prendre le dictionnaire ✔
  * extraire tous les mots de base pour chaque type ✔
- * les classer par ordre alphabétique
  * les mettre dans un arbre n_air correspondant à leur type
  * choisir un mot au hasard
  * verifier si il à une variante
- * faire le tableau de la variante si oui ( lister toute les variantes dans un autre arbre n_air)
+ * faire le tableau de la variante si oui (lister toute les variantes dans un autre arbre n_air)
  * selectionner une variante pour faire une phrase
- * */
+ */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+char * char_stripe_last_char(const char ** src){
+    int flen = strlen(src[0])-1;
+
+    char dest[flen];
+    for(int i =0;i<flen;i++){
+        //printf("\n %c \n",src[i]);
+        char * desto = &dest[i];
+        sprintf(desto,"%c",src[0][i]);
+        //dest[i] = src[i];
+        //printf("\n %c %d %s\n",dest[i],flen,src[0]);
+    }
+    //dest[j] = '\0';
+    return dest;
+}

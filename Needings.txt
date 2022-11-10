@@ -47,8 +47,7 @@ Objectif actuel (3)
 - fonction pour savoir si un mot se trouve ou pas dans le dictionnaire ( paramètre : colonne base/ flechis; mot; type)
 - fonction de recherche à partir de forme ( partie de la colonne 3 comme IPRE / fut....)
 -- refaire toute ces fonctions pour avoir des return et non des void + avec les caractères spéciaux et tous les paramètres
--  Fonction pour
-    1- parser la 3eme colonne et obtenir des uniq value ✔
+
     2- pour la rendre compréhensible / faire des phrases avec la 3eme colonne
 
 

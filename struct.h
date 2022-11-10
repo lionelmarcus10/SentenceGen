@@ -24,4 +24,21 @@ typedef struct s_child
     struct s_child *next;
 } t_child, *p_child;
 
+typedef struct s_tree{
+    struct s_node * root;
+} t_tree,*p_tree;
+
+typedef struct llc{
+    int value;
+    struct llc * next;
+} t_llc , *p_llc ;
+
+// fonctions
+p_node create_node(p_node ,char );
+p_child create_child(p_child , char );
+p_form create_form(p_form ,char * , int );
+void fill_form(p_form ,char* ,int );
+void display_all_form(p_form );
+void display_all_children(p_child );
+//t_tree create_tree();
 #endif //SENTENCEGEN_STRUCT_H
