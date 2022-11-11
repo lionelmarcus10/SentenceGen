@@ -2,78 +2,14 @@
 // Created by Lionel on 27/10/2022.
 //
 
-#include "file.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "file.h"
+#include "tag.h"
 
-// fonction pour lire un fichier
-void showFile(){
-
-    const char * dico = "../test.txt";
-
-    FILE * Dico = fopen(dico,"r");
-    if(!Dico) {
-        perror("File opening failed");
-    }else{
-        char buf[200];
-        while (fgets(buf, sizeof buf, Dico) != NULL)
-            printf("%s", buf);
-    }
-    fclose(Dico);
-};
-
-// fonction pour afficher les colonnes d'un fichier ( chaque colonne séparé par une tabulation)
-void showFileColumn(int column){
-
-    char * dico = "../test.txt";
-    FILE * Dico = fopen(dico,"r");
-    if(!Dico) {
-        perror("File opening failed");
-    }else{
-        char buf[200];
-        while (fgets(buf, sizeof buf, Dico) != NULL){
-            char *current_column = strtok(buf, "\t");
-            int col = 1;
-            while(col < column) {
-                current_column = strtok(NULL, "\t");
-                col++;
-            }
-            printf("%s",current_column);
-        }
-    }
-    fclose(Dico);
-};
-
-// fonction pour trouver les formes fléchis d'un mot à partir de la base et afficher
-void showVariantByBaseInFile(char * base){
-
-    char * dico = "../test.txt";
-    int base_Col = 2;
-    int variant_Col = 1;
-    FILE * Dico = fopen(dico,"r");
-    if(!Dico) {
-        perror("File opening failed");
-    }else{
-        char buf[200];
-        int found = 0;
-        while (fgets(buf, sizeof buf, Dico) != NULL){
-            // recuperer les deux colonnes de la ligne
-            char *var_col_element = strtok(buf, "\t");
-            char *base_col_element = strtok(NULL,"\t");
-            // afficher le variant si la base correspond
-            if(strcmp(base, base_col_element) == 0) {
-                found = 1;
-                printf("%s\n ", var_col_element);
-            }
-        }
-        if(found == 0)
-            printf("Pas de forme flechis dans le dictionnaire");
-    }
-    fclose(Dico);
-};
-
-//- fonction pour trouver la base d'un mot à partir de la forme fléchis et afficher
+//- fonction pour trouver la base d'un mot à partir de la forme fléchis et afficher ( fonction utilisé en interne )
 void showBaseByVariantInFile(char * variant){
 
     char * dico = "../test.txt";
@@ -100,7 +36,8 @@ void showBaseByVariantInFile(char * variant){
     }
     fclose(Dico);
 };
-// fonction pour afficher la nature des mots sur chaque colonne : uniq values
+
+// fonction pour afficher la nature des mots sur chaque colonne : uniq values ( fonction utilisé en interne pour connaitre toutes les natures de mot)
 void thirColFirstParserShow(){
     int column = 3;
     char * dico = "../test.txt";
@@ -150,30 +87,7 @@ void thirColFirstParserShow(){
     fclose(Dico);
 };
 
-// supprimer les redondances dans un tableau de char ** contenant des char *
-char ** occDeleter(char ** tableau,int nbr){
-    int clean;
-    do{
-        clean=1;
-        for(int i=0 ; i<nbr-1; i++ ){
-            for(int j=i+1;j<nbr;j++){
-                if (strcmp(tableau[i],tableau[j]) == 0)
-                {
-                    for(int k=j;k<nbr;k++)
-                        tableau[k] = tableau[k+1];
-                    //free(tableau[nbr]);
-                    clean = 0;
-                    nbr--;
-                }
-            }
-        }
-    }while (clean!=1);
-    for(int v= 0;v<nbr;v++)
-        printf("%s",tableau[v]);
-    return tableau;
-};
-
-// fonction pour afficher les differents types de conjugaison des mots sur chauque colonne : uniq values
+// fonction pour afficher les differents types de conjugaison des mots sur chauque colonne : uniq values ( fonction utilisé en interne pour connaitre les differents temps et accords utilisés )
 void thirColFirstParser2Show(){
     int column = 3;
     char * dico = "dictionnaire_non_accentue.txt";
@@ -230,104 +144,197 @@ void thirColFirstParser2Show(){
     fclose(Dico);
 }
 
-/*  -------------------------------------------------------------------------------------------------------------------------------------------------------------  */
-// fonction pour extraire tous les mots appartenant à un type donné dans un fichier et retourner une liste
-char ** extractWordByType(char* type){
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+// creer et chercher un enfants sur la ligne horizontale
+p_child child_horizontal(char val,p_node rac){
+    // si le noeud est null
+    if(rac->children == NULL){
+        p_child temp_null = create_child(temp_null,val);
+        rac->children = temp_null;
+        return temp_null;
+    }else{
+        p_child temp_child = rac->children;
+
+        // comparer le premier enfant
+        if(temp_child->node->value == val){
+            return temp_child;
+        }else{
+            // comparer les autres enfants
+            while(temp_child->next != NULL){
+                if(temp_child->node->value == val)
+                    return temp_child;
+                else
+                    temp_child = temp_child->next;
+            }
+            // comparer le dernier enfant
+            if(temp_child->node->value == val)
+                return temp_child;
+            else{
+                // creer un enfant après le dernier enfant ( add a tail)
+                temp_child->next = create_child(temp_child->next,val);
+                temp_child = temp_child->next;
+                return temp_child;
+            }
+            // to modify
+        }
+    }
+};
+
+// ajouter les formes fléchis à la fin du mot d'une forme de base
+void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start){
+
+    char * dico = "test.txt";
+    int base_Col = 2;
+    int variant_Col = 1;
+    FILE * Dico = fopen(dico,"r");
+    if(!Dico) {
+        perror("File opening failed");
+    }else{
+        char buf[200];
+        int found = 0;
+        char * tag_tab = malloc(85*sizeof(char));
+        char * secondInt = malloc(85*sizeof(char));
+        while (fgets(buf, sizeof buf, Dico) != NULL){
+            // recuperer les trois colonnes de la ligne
+            char *var_col_element = strtok(buf, "\t");
+            char *base_col_element = strtok(NULL,"\t");
+            char * second_part = strtok(NULL,"\t");
+            strtok(second_part,"\n");
+
+            sprintf(secondInt,"%s",second_part);
+            char * first_part = strtok(secondInt,":");
+
+            strtok(second_part,":");
+            //
+
+            if(strcmp(base, base_col_element) == 0  && strcmp(first_part,typeName) ==0 ){
+                while(second_part !=NULL){
+                    second_part = strtok(NULL,":");
+                    if(second_part != NULL){
+                        sprintf(tag_tab,"%s",second_part);
+                        int tag = getFlags(tag_tab);
+                        fill_form(form_start,var_col_element,tag,typeName);
+                        //printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
+                    }
+                }
+            }
+            /*while(second_part !=NULL){
+              second_part = strtok(NULL,":");
+              if(second_part != NULL){
+                sprintf(tag_tab,"%s",second_part);
+                int tag = getFlags(tag_tab);
+                if(strcmp(base, base_col_element) == 0  && strcmp(first_part,typeName) ==0 ){
+                    found = 1;
+                    //fill_form(form_start,var_col_element,tag);
+                    printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
+                }
+              }
+            };*/
+
+
+        }
+        free(tag_tab);
+        //to del
+        /*if(found == 0)
+            printf("Pas de forme flechis dans le dictionnaire");*/
+        // del
+    }
+    fclose(Dico);
+};
+
+// remplir children en vertical
+void remplir_arbre(p_node racine ,char * mot,char * typeName){
+    int length = strlen(mot);
+    //printf("%s %d\n",mot,length);
+    // si le noeud RACINE n'a pas d'enfant
+    p_child temp;
+    if(racine->children == NULL){
+        racine->children = create_child(racine->children,mot[0]);
+        temp = racine->children;
+        for(int i =1;i<length-1;i++){
+            p_child temp2 = create_child(temp2,mot[i]);
+            temp->node->children = temp2;
+            temp = temp->node->children;
+        };
+        p_child temp2 = create_child(temp2,mot[length-1]);
+        // remplir la dernière case et toutes les formes
+        temp = temp2;
+        // remplir toutes les formes
+        //add_Variant_By_Base_In_File(mot, typeName,temp->node->forms);
+
+    }else{
+        p_node temp_node = racine;
+        temp = racine->children;
+        for(int x =0;x<length-1;x++){
+            temp = child_horizontal(mot[x],temp_node);
+            temp_node = temp->node;
+        };
+        // remplir la dernière case et toutes les formes
+        temp = child_horizontal(mot[length-1],temp_node);
+        temp_node  = temp->node;
+    }
+    // remplir la form si elle est null
+    if(temp->node->forms == NULL){
+        add_Variant_By_Base_In_File(mot, typeName,temp->node);
+
+    };
+}
+
+
+// Remplir un type d'arbre
+t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
+
+    //char * dico = "test.txt";
     char * dico = "test.txt";
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");
     }else{
         char buf[200];
-        // creer un tableau
-        char **tableau = NULL;
-        int nbr = 287976; //287976; 10
-        tableau = malloc( sizeof(char*) * nbr);
-        // allouer une taille à chaque case du tableau
-        for (int i=0; i<nbr;i++) {
-            tableau[i] = malloc(sizeof(char)*100);
-        }
-        // extraire les formes de base pour le type
+        // extraire les infos de chaque ligne
         int k=0;
-        while (fgets(buf, sizeof buf, Dico) != NULL){
-            char *current_column = strtok(buf, "\t");
-            current_column = strtok(NULL, "\t");
-            char * temp = malloc(100*sizeof(char));
-            sprintf(temp,"%s",current_column);
-            current_column = strtok(NULL, "\t");
-            strtok(current_column, ":");
-            // verifier si le type correspond
-            if(strcmp(current_column,type) == 0){
-                // verifier si il n'existe pas encore dans le tableau puis ajouter
-                //printf("%s\n",temp);
-                int clean = 0;
-                // eviter les redondances
-                for(int i =0;i<k;i++){
-                    if (strcmp(tableau[i],temp) == 0)
-                        clean = 1;
-                }
-                if(clean == 0){
-                    sprintf(tableau[k],"%s",temp);
-                    k++;
-                }
-            }
-            free(temp);
+        // creer un tableau de sting
+        char **tableau = NULL;
+        tableau = malloc( sizeof(char*) *3);
+        // allouer une taille à chaque case du tableau
+        for (int i=0; i<3;i++) {
+            tableau[i] = malloc(sizeof(char)*85);
         }
-        for(int b=k;b<nbr;b++){
-            tableau[k] = NULL;
-            free(tableau[k]);
-        };
-        fclose(Dico);
-        return tableau;
+        while (fgets(buf, sizeof buf, Dico) != NULL){
+
+            // use  t-0, t-1, thirdCol
+            // colonne 1
+            char *current_column = strtok(buf, "\t");
+            sprintf(tableau[0],"%s",current_column);
+
+            // colonne 2
+            // supprimer le \t collé aux mots
+            current_column = strtok(NULL, "\t");
+            sprintf(tableau[1],"%s",current_column);
+
+            // colonne 3
+            current_column = strtok(NULL, "\n");
+            char* thirdCol = malloc((strlen(current_column))*sizeof(char));
+            sprintf(thirdCol,"%s",strtok(current_column, "\n"));
+            char* typePart = strtok(thirdCol,":");
+            //printf(" -%s-\n",current_column);
+
+            // verifier si les types correspondent
+            if(strcmp(typeOfTree,typePart) == 0){
+                // remplir l'arbre
+                remplir_arbre(racine,tableau[1],typeOfTree);
+            }
+
+        }
+        // fin while
+        free(tableau);
     }
+    fclose(Dico);
 };
 
-//fonction pour classer un tableau par ordre alphabétique
-char** chainecomp(char** str_ing1){
-    int temp1=0;
-    char** newtab;
-    while(temp1 == 0 ){
-        temp1 = 1 ;
-        int i = 1 ;
-        while(str_ing1[i] != NULL ){
-            if(strcmp(str_ing1[i-1],str_ing1[i]) > 0){
-                char* temp3 = str_ing1[i-1];
-                str_ing1[i-1] = str_ing1[i];
-                str_ing1[i] = temp3;
-                temp3 = NULL;
-                free(temp3);
-                temp1 = 0;
-            }
-            i++;
-        }
 
-    }
-    return str_ing1 ;
-}
 
-//fonction pour generer un nombre en fonction du caractère alphabétique
-
-/*
- * prendre le dictionnaire ✔
- * extraire tous les mots de base pour chaque type ✔
- * les mettre dans un arbre n_air correspondant à leur type
- * choisir un mot au hasard
- * verifier si il à une variante
- * faire le tableau de la variante si oui (lister toute les variantes dans un autre arbre n_air)
- * selectionner une variante pour faire une phrase
- */
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-char * char_stripe_last_char(const char ** src){
-    int flen = strlen(src[0])-1;
-
-    char dest[flen];
-    for(int i =0;i<flen;i++){
-        //printf("\n %c \n",src[i]);
-        char * desto = &dest[i];
-        sprintf(desto,"%c",src[0][i]);
-        //dest[i] = src[i];
-        //printf("\n %c %d %s\n",dest[i],flen,src[0]);
-    }
-    //dest[j] = '\0';
-    return dest;
-}

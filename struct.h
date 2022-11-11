@@ -36,9 +36,9 @@ typedef struct llc{
 // fonctions
 p_node create_node(p_node ,char );
 p_child create_child(p_child , char );
-p_form create_form(p_form ,char * , int );
-void fill_form(p_form ,char* ,int );
+p_form create_form(p_form ,char * , int);
+void fill_form(p_node ,char* ,int , char *);
 void display_all_form(p_form );
 void display_all_children(p_child );
-//t_tree create_tree();
+t_tree create_tree();
 #endif //SENTENCEGEN_STRUCT_H

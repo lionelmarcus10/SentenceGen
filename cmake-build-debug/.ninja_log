@@ -20,3 +20,6 @@
 115	265	6898146812571236	SentenceGen.exe	82bbdaa9e73ef896
 2	124	6898147584716541	CMakeFiles/SentenceGen.dir/main.c.obj	63bfea9572259645
 2	97	6898148169999081	CMakeFiles/SentenceGen.dir/main.c.obj	63bfea9572259645
+22	315	6898652973435271	CMakeFiles/SentenceGen.dir/struct.c.obj	f8e0d5b811c1317f
+52	354	6898926892294806	CMakeFiles/SentenceGen.dir/struct.c.obj	f8e0d5b811c1317f
+2	359	6898926892314463	CMakeFiles/SentenceGen.dir/main.c.obj	63bfea9572259645
