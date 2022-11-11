@@ -186,8 +186,8 @@ p_child child_horizontal(char val,p_node rac){
 
 // ajouter les formes fléchis à la fin du mot d'une forme de base
 void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start){
-
-    char * dico = "../test.txt";
+    char * dico = "../dictionnaire_non_accentue.txt";
+    //char * dico = "../test.txt";
     int base_Col = 2;
     int variant_Col = 1;
     FILE * Dico = fopen(dico,"r");
@@ -217,7 +217,7 @@ void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start
                     if(second_part != NULL){
                         sprintf(tag_tab,"%s",second_part);
                         int tag = getFlags(tag_tab);
-                        fill_form(form_start,var_col_element,tag,typeName);
+                        //fill_form(form_start,var_col_element,tag,typeName);
                         //printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
                     }
                 }
@@ -279,7 +279,7 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
     }
     // remplir la form si elle est null
     if(temp->node->forms == NULL){
-        add_Variant_By_Base_In_File(mot, typeName,temp->node);
+        //add_Variant_By_Base_In_File(mot, typeName,temp->node);
 
     };
 }
@@ -288,8 +288,8 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
 // Remplir un type d'arbre
 t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
 
-    //char * dico = "../dictionnaire_non_accentue.txt";
-    char * dico = "../test.txt";
+    char * dico = "../dictionnaire_non_accentue.txt";
+    //char * dico = "../test.txt";
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");
@@ -331,7 +331,7 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
 
         }
         // fin while
-        free(tableau);
+
     }
     fclose(Dico);
 };

@@ -6,6 +6,7 @@
 int main(){
     //t_tree Tree = create_tree();
     //extractWordByTypeInDictionnary(Tree.root,"Ver");
+    printf("hello");
     t_tree Nom_Tree = create_tree();
     t_tree Pre_Tree = create_tree();
     t_tree Ver_Tree = create_tree();
@@ -19,6 +20,8 @@ int main(){
     t_tree Ono_Tree = create_tree();
     t_tree QPro_Tree = create_tree();
     t_tree Conj_Tree = create_tree();
+
+    printf("All Tree created\n");
 
     extractWordByTypeInDictionnary(Nom_Tree.root,"Nom");
     extractWordByTypeInDictionnary(Pre_Tree.root,"Pre");
