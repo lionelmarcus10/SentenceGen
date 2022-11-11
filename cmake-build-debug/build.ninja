@@ -61,6 +61,18 @@ build CMakeFiles/SentenceGen.dir/struct.c.obj: C_COMPILER__SentenceGen_Debug C$:
   OBJECT_DIR = CMakeFiles\SentenceGen.dir
   OBJECT_FILE_DIR = CMakeFiles\SentenceGen.dir
 
+build CMakeFiles/SentenceGen.dir/file.c.obj: C_COMPILER__SentenceGen_Debug C$:/Users/togla/OneDrive/Bureau/SentenceGen/file.c || cmake_object_order_depends_target_SentenceGen
+  DEP_FILE = CMakeFiles\SentenceGen.dir\file.c.obj.d
+  FLAGS = -g -std=gnu11
+  OBJECT_DIR = CMakeFiles\SentenceGen.dir
+  OBJECT_FILE_DIR = CMakeFiles\SentenceGen.dir
+
+build CMakeFiles/SentenceGen.dir/tag.c.obj: C_COMPILER__SentenceGen_Debug C$:/Users/togla/OneDrive/Bureau/SentenceGen/tag.c || cmake_object_order_depends_target_SentenceGen
+  DEP_FILE = CMakeFiles\SentenceGen.dir\tag.c.obj.d
+  FLAGS = -g -std=gnu11
+  OBJECT_DIR = CMakeFiles\SentenceGen.dir
+  OBJECT_FILE_DIR = CMakeFiles\SentenceGen.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target SentenceGen
@@ -69,7 +81,7 @@ build CMakeFiles/SentenceGen.dir/struct.c.obj: C_COMPILER__SentenceGen_Debug C$:
 #############################################
 # Link the executable SentenceGen.exe
 
-build SentenceGen.exe: C_EXECUTABLE_LINKER__SentenceGen_Debug CMakeFiles/SentenceGen.dir/main.c.obj CMakeFiles/SentenceGen.dir/struct.c.obj
+build SentenceGen.exe: C_EXECUTABLE_LINKER__SentenceGen_Debug CMakeFiles/SentenceGen.dir/main.c.obj CMakeFiles/SentenceGen.dir/struct.c.obj CMakeFiles/SentenceGen.dir/file.c.obj CMakeFiles/SentenceGen.dir/tag.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\SentenceGen.dir

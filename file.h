@@ -2,6 +2,7 @@
 // Created by Lionel on 27/10/2022.
 //
 #include "struct.h"
+#include "tag.h"
 
 #ifndef SENTENCEGEN_FILE_H
 #define SENTENCEGEN_FILE_H

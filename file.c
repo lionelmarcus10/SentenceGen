@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "file.h"
-#include "tag.h"
+
 
 //- fonction pour trouver la base d'un mot à partir de la forme fléchis et afficher ( fonction utilisé en interne )
 void showBaseByVariantInFile(char * variant){
@@ -90,7 +90,7 @@ void thirColFirstParserShow(){
 // fonction pour afficher les differents types de conjugaison des mots sur chauque colonne : uniq values ( fonction utilisé en interne pour connaitre les differents temps et accords utilisés )
 void thirColFirstParser2Show(){
     int column = 3;
-    char * dico = "dictionnaire_non_accentue.txt";
+    char * dico = "../dictionnaire_non_accentue.txt";
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");
@@ -187,7 +187,7 @@ p_child child_horizontal(char val,p_node rac){
 // ajouter les formes fléchis à la fin du mot d'une forme de base
 void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start){
 
-    char * dico = "test.txt";
+    char * dico = "../test.txt";
     int base_Col = 2;
     int variant_Col = 1;
     FILE * Dico = fopen(dico,"r");
@@ -288,8 +288,8 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
 // Remplir un type d'arbre
 t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
 
-    //char * dico = "test.txt";
-    char * dico = "test.txt";
+    //char * dico = "../dictionnaire_non_accentue.txt";
+    char * dico = "../test.txt";
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");

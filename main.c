@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "file.c"
+#include "file.h"
 
 int main(){
     //t_tree Tree = create_tree();

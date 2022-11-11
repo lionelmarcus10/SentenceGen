@@ -1,3 +1,6 @@
+#ifndef SENTENCEGEN_TAG_H
+#define SENTENCEGEN_TAG_H
+
 #define P1_TB  1
 #define P2_TB  2
 #define P3_TB  4
@@ -46,3 +49,5 @@
 #define  Nom    "Nom"
 
 int getFlags(char *tag);
+
+#endif
