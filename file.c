@@ -188,8 +188,6 @@ p_child child_horizontal(char val,p_node rac){
 void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start){
     char * dico = "../dictionnaire_non_accentue.txt";
     //char * dico = "../test.txt";
-    int base_Col = 2;
-    int variant_Col = 1;
     FILE * Dico = fopen(dico,"r");
     if(!Dico) {
         perror("File opening failed");
@@ -202,46 +200,28 @@ void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start
             // recuperer les trois colonnes de la ligne
             char *var_col_element = strtok(buf, "\t");
             char *base_col_element = strtok(NULL,"\t");
-            char * second_part = strtok(NULL,"\t");
-            strtok(second_part,"\n");
+            if(strcmp(base, base_col_element) == 0){
+                char * second_part = strtok(NULL,"\t");
+                strtok(second_part,"\n");
+                sprintf(secondInt,"%s",second_part);
+                char * first_part = strtok(secondInt,":");
 
-            sprintf(secondInt,"%s",second_part);
-            char * first_part = strtok(secondInt,":");
-
-            strtok(second_part,":");
-            //
-
-            if(strcmp(base, base_col_element) == 0  && strcmp(first_part,typeName) ==0 ){
-                while(second_part !=NULL){
-                    second_part = strtok(NULL,":");
-                    if(second_part != NULL){
-                        sprintf(tag_tab,"%s",second_part);
-                        int tag = getFlags(tag_tab);
-                        //fill_form(form_start,var_col_element,tag,typeName);
-                        //printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
+                if(strcmp(first_part,typeName) ==0 ){
+                    strtok(second_part,":");
+                    while(second_part !=NULL){
+                        second_part = strtok(NULL,":");
+                        if(second_part != NULL){
+                            sprintf(tag_tab,"%s",second_part);
+                            int tag = getFlags(tag_tab);
+                            //fill_form(form_start,var_col_element,tag,typeName);
+                            //printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
+                        }
                     }
                 }
+
             }
-            /*while(second_part !=NULL){
-              second_part = strtok(NULL,":");
-              if(second_part != NULL){
-                sprintf(tag_tab,"%s",second_part);
-                int tag = getFlags(tag_tab);
-                if(strcmp(base, base_col_element) == 0  && strcmp(first_part,typeName) ==0 ){
-                    found = 1;
-                    //fill_form(form_start,var_col_element,tag);
-                    printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
-                }
-              }
-            };*/
-
-
-        }
+        };
         free(tag_tab);
-        //to del
-        /*if(found == 0)
-            printf("Pas de forme flechis dans le dictionnaire");*/
-        // del
     }
     fclose(Dico);
 };
@@ -249,7 +229,6 @@ void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start
 // remplir children en vertical
 void remplir_arbre(p_node racine ,char * mot,char * typeName){
     int length = strlen(mot);
-    //printf("%s %d\n",mot,length);
     // si le noeud RACINE n'a pas d'enfant
     p_child temp;
     if(racine->children == NULL){
@@ -278,10 +257,10 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
         temp_node  = temp->node;
     }
     // remplir la form si elle est null
-    if(temp->node->forms == NULL){
+    /*if(temp->node->forms == NULL){
         //add_Variant_By_Base_In_File(mot, typeName,temp->node);
 
-    };
+    };*/
 }
 
 
@@ -327,6 +306,7 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
             if(strcmp(typeOfTree,typePart) == 0){
                 // remplir l'arbre
                 remplir_arbre(racine,tableau[1],typeOfTree);
+                // remplir enfants
             }
 
         }
@@ -335,6 +315,8 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
     }
     fclose(Dico);
 };
+
+
 
 
 

@@ -41,4 +41,7 @@ void fill_form(p_node ,char* ,int , char *);
 void display_all_form(p_form );
 void display_all_children(p_child );
 t_tree create_tree();
+int count_children(p_child);
+void extraire_un_mot_aleatoirement(p_node);
+void display_all_word_in_tree_by_root(p_node);
 #endif //SENTENCEGEN_STRUCT_H
