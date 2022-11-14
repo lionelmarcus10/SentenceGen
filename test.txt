@@ -1,3 +1,6 @@
+a	a	Nom:Mas+InvPL
+b	a	Pre
+a	avoir	Ver:IPre+SG+P3
 stabilimetre	stabilimetre	Nom:Mas+SG
 stabilisaient	stabiliser	Ver:IImp+PL+P3
 stabilisais	stabiliser	Ver:IImp+SG+P1:IImp+SG+P2
@@ -6,5 +9,10 @@ stabilisait	stabiliser	Ver:IImp+SG+P3
 stabilisames	stabiliser	Ver:IPSim+PL+P1
 stabilisant	stabilisant	Adj:Mas+SG
 stabilisant	stabilisant	Nom:Mas+SG
+stabilimetre	stabilimetre	Nom:Mas+PL:IImp+SG+P2
 stabilisant	stabiliser	Ver:PPre
 stabilisassent	stabiliser	Ver:SImp+PL+P3
+stabilisant	stabilisr	Ver:PPre
+stabilimetre	stabilimetre	Nom:Mas+PL
+avoir	a	Pre
+apres	a	Pre

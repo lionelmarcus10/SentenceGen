@@ -1,16 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "menu.h"
 #include "file.h"
-
+#include <time.h>
 int main(){
-    printf("hello");
-    t_tree Nom_Tree = create_tree();
-    printf("All Tree created\n");
-    extractWordByTypeInDictionnary(Nom_Tree.root,"Nom");
-    display_all_children(Nom_Tree.root->children);
-    //display_all_word_in_tree_by_root(Nom_Tree.root);
-    extraire_un_mot_aleatoirement(Nom_Tree.root);
+    /*printf("hello");*/
+    //t_tree Nom_Tree = create_tree();
+    //extractWordByTypeInDictionnary(Nom_Tree.root,"Pre");
+    //display_all_form(Nom_Tree.root->children->node->forms);
+    //display_all_children(Nom_Tree.root->children);
+    srand(time(NULL));
+    menu_principal();
+    printf("end\n");
     return 0 ;
 };
 /* call all types

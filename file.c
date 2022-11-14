@@ -208,13 +208,18 @@ void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start
 
                 if(strcmp(first_part,typeName) ==0 ){
                     strtok(second_part,":");
+                    if(invariable(typeName) == 1){
+                        //printf("%s %s %s\n",typeName,var_col_element,base_col_element);
+                        fill_form(form_start,var_col_element,0,typeName);
+                        //display_all_form(form_start->forms);
+                    }
                     while(second_part !=NULL){
                         second_part = strtok(NULL,":");
                         if(second_part != NULL){
                             sprintf(tag_tab,"%s",second_part);
                             int tag = getFlags(tag_tab);
-                            //fill_form(form_start,var_col_element,tag,typeName);
-                            //printf("%s %s %s %d %s\n",var_col_element,base_col_element,second_part,tag,typeName);
+                            fill_form(form_start,var_col_element,tag,typeName);
+                            //display_all_form(form_start->forms);
                         }
                     }
                 }
@@ -242,8 +247,6 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
         p_child temp2 = create_child(temp2,mot[length-1]);
         // remplir la dernière case et toutes les formes
         temp = temp2;
-        // remplir toutes les formes
-        //add_Variant_By_Base_In_File(mot, typeName,temp->node->forms);
 
     }else{
         p_node temp_node = racine;
@@ -257,10 +260,12 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
         temp_node  = temp->node;
     }
     // remplir la form si elle est null
-    /*if(temp->node->forms == NULL){
+    if(temp->node->forms == NULL){
+        //printf(" %s",mot);
         //add_Variant_By_Base_In_File(mot, typeName,temp->node);
-
-    };*/
+        //display_all_form(temp->node->forms);
+        //printf("lol\n");
+    }
 }
 
 
@@ -300,13 +305,13 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
             char* thirdCol = malloc((strlen(current_column))*sizeof(char));
             sprintf(thirdCol,"%s",strtok(current_column, "\n"));
             char* typePart = strtok(thirdCol,":");
-            //printf(" -%s-\n",current_column);
 
             // verifier si les types correspondent
             if(strcmp(typeOfTree,typePart) == 0){
                 // remplir l'arbre
+                //printf("-%s-",tableau[1]);
                 remplir_arbre(racine,tableau[1],typeOfTree);
-                // remplir enfants
+                //printf("\n");
             }
 
         }
@@ -316,7 +321,105 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
     fclose(Dico);
 };
 
+// fonction pour reperer les types invariable
+int invariable(char * type){
+    char str_type[] = "Pre Adv Ono Abr Conj QPro Int Con";
+    if(strstr(str_type,type) == NULL)
+        return 0;
+    return 1;
+};
 
 
+/*------------------------------------------------------------------------------------*/
+// une fonction pour trouver un enfant
+p_child chercher_un_enfant(p_node p, char c){
+    p_child temporary_child = p->children;
+    p_child temp = NULL;
+    while(temporary_child->next != NULL){
+        if(temporary_child->node->value == c )
+            return temporary_child;
+        else
+            temporary_child = temporary_child->next;
+    }
+    if(temporary_child->node->value == c )
+        return temporary_child;
+    else
+        return temp;
+}
 
+// une fonction pour permet de saisir un mot à chercher
+char* mot_a_chercher(){
+    char * mot = malloc(27 * sizeof(char)) ;
+    printf("Veuillez saisir le mot que vous voulez chercher : ");
+    scanf("%s",mot);
+    return mot ;
+}
+
+// une fonction pour rechercher un mot
+void  rechercher_un_mot(p_node root, char* type, char* mot  ){
+
+    int length = strlen(mot);
+    p_node pn = root;
+
+    if( pn->children == NULL){
+        printf(" N'exste pas dans : %s\n",type);
+    }else {
+
+        if (pn->children != NULL) {
+            pn = root;
+            /* for (int i = 0; i < length; i++) */
+
+            int i = 0;
+            while (i < length && pn !=NULL){
+                if(pn->children == NULL){
+                    printf(" N'existe pas dans : %s\n", type);
+                    pn= NULL;
+                }else{
+                    p_child b = chercher_un_enfant(pn, mot[i]);
+
+                    if (b != NULL) {
+                        pn = b->node;
+                    } else {
+                        //Le mot n'exite pas
+                        printf(" N'existe pas dans : %s\n", type);
+                        pn = NULL;
+                    }
+                }
+                i++;
+            }
+            if (pn != NULL) {
+
+                printf("\n Le mot saisie : %s est une forme de base de nature => %s \n",mot, type);
+
+                // appeler la fonction pour lire les forme flèchie de la fin de mot et leur si-facation
+            }
+        }
+
+
+    }
+}
+
+void  rechercher_global_by_base(p_node root_Nom,p_node root_Pre, p_node root_Ver, p_node root_Adj, p_node root_Int,
+                                p_node root_Det, p_node root_Pro,p_node root_Con,p_node root_Abr,p_node root_Adv,
+                                p_node root_Ono,p_node root_QPro,p_node root_Conj)
+
+{
+    char * mot = malloc(24*sizeof(char ));
+    mot= mot_a_chercher();
+    printf("\n\n%s\n\n",mot);
+    rechercher_un_mot(root_Nom,Nom,mot);
+    rechercher_un_mot(root_Pre,Pre,mot);
+    rechercher_un_mot(root_Ver, Ver,mot);
+    rechercher_un_mot(root_Adj, Adj,mot);
+    rechercher_un_mot(root_Int, Int,mot);
+    rechercher_un_mot(root_Det, Det,mot);
+    rechercher_un_mot(root_Pro,Pro,mot);
+    rechercher_un_mot(root_Con, Con,mot);
+    rechercher_un_mot(root_Abr, Abr,mot);
+    rechercher_un_mot(root_Adv,Adv,mot);
+    rechercher_un_mot(root_Ono, Ono,mot);
+    rechercher_un_mot(root_QPro, QPro,mot);
+    rechercher_un_mot(root_Conj, Conj,mot);
+
+}
 

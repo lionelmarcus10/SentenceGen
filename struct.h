@@ -36,12 +36,15 @@ typedef struct llc{
 // fonctions
 p_node create_node(p_node ,char );
 p_child create_child(p_child , char );
-p_form create_form(p_form ,char * , int);
+p_form create_form(/*p_form ,*/char * , int);
 void fill_form(p_node ,char* ,int , char *);
 void display_all_form(p_form );
 void display_all_children(p_child );
 t_tree create_tree();
 int count_children(p_child);
 void extraire_un_mot_aleatoirement(p_node);
+char * random_word_string(p_node);
+void generate_sentence(int choice,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node,p_node);
 void display_all_word_in_tree_by_root(p_node);
+int invariable(char * );
 #endif //SENTENCEGEN_STRUCT_H
