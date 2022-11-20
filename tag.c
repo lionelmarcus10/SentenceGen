@@ -55,6 +55,10 @@ int getFlags(char *tag)
             flag += Imp_TB;
         else if(strcmp(flag,ImPre ) == 0)
             flag += ImPre_TB;
+        else if(strcmp(flag,Fem3 ) == 0)
+            flag += Fem_TB;
+        else if(strcmp(flag,Mas3 ) == 0)
+            flag += Mas_TB;
     } while ((flag = strtok_r(NULL, "+", &saveptr)));
     return flags;
 }

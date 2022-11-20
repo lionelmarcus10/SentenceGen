@@ -29,4 +29,6 @@ CMakeFiles/SentenceGen.dir/menu.c.obj: \
  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/malloc.h \
  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h \
- C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/errno.h
+ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/errno.h \
+ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/string.h \
+ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h

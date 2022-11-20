@@ -22,6 +22,7 @@
 #define  Imp_TB    262144
 #define InvPL_TB   524288
 #define ImPre_TB   1048576
+
 #define  Card_TB   2097152
 #define Nom_TB     4194304
 
@@ -37,6 +38,8 @@
 #define IImp    "IImp"
 #define PPre    "PPre"
 #define Fem      "Fem"
+#define Fem3    "3Fem"
+#define Mas3    "3Mas"
 #define SImp     "SImp"
 #define  IFut    "IFut"
 #define  Inf    "Inf"

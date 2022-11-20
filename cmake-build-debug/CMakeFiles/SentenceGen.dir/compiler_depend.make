@@ -56,12 +56,7 @@ CMakeFiles/SentenceGen.dir/main.c.obj: ../main.c \
   ../menu.h \
   ../file.h \
   ../struct.h \
-  ../tag.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/time.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/_timeval.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sys/timeb.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/pthread_time.h
+  ../tag.h
 
 CMakeFiles/SentenceGen.dir/menu.c.obj: ../menu.c \
   ../menu.h \
@@ -93,7 +88,9 @@ CMakeFiles/SentenceGen.dir/menu.c.obj: ../menu.c \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/malloc.h \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/errno.h
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/errno.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/string.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h
 
 CMakeFiles/SentenceGen.dir/struct.c.obj: ../struct.c \
   ../struct.h \
@@ -124,7 +121,15 @@ CMakeFiles/SentenceGen.dir/struct.c.obj: ../struct.c \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/_timeval.h \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sys/timeb.h \
   C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h \
-  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/pthread_time.h
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/pthread_time.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/unistd.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/io.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/process.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/corecrt_startup.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sys/types.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/getopt.h \
+  C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/pthread_unistd.h \
+  ../tag.h
 
 CMakeFiles/SentenceGen.dir/tag.c.obj: ../tag.c \
   ../tag.h \
@@ -191,6 +196,8 @@ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/m
 
 C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/string.h:
 
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/io.h:
+
 ../menu.h:
 
 C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h:
@@ -199,7 +206,13 @@ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/m
 
 ../main.c:
 
+../menu.c:
+
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/getopt.h:
+
 C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/time.h:
+
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/unistd.h:
 
 C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/_timeval.h:
 
@@ -207,8 +220,14 @@ C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/m
 
 C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h:
 
-../menu.c:
-
 ../struct.c:
 
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/process.h:
+
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/corecrt_startup.h:
+
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/sys/types.h:
+
 ../tag.c:
+
+C:/Users/togla/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/mingw/x86_64-w64-mingw32/include/pthread_unistd.h:

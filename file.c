@@ -184,69 +184,22 @@ p_child child_horizontal(char val,p_node rac){
     }
 };
 
-// ajouter les formes fléchis à la fin du mot d'une forme de base
-void add_Variant_By_Base_In_File(char * base, char * typeName, p_node form_start){
-    char * dico = "../dictionnaire_non_accentue.txt";
-    //char * dico = "../test.txt";
-    FILE * Dico = fopen(dico,"r");
-    if(!Dico) {
-        perror("File opening failed");
-    }else{
-        char buf[200];
-        int found = 0;
-        char * tag_tab = malloc(85*sizeof(char));
-        char * secondInt = malloc(85*sizeof(char));
-        while (fgets(buf, sizeof buf, Dico) != NULL){
-            // recuperer les trois colonnes de la ligne
-            char *var_col_element = strtok(buf, "\t");
-            char *base_col_element = strtok(NULL,"\t");
-            if(strcmp(base, base_col_element) == 0){
-                char * second_part = strtok(NULL,"\t");
-                strtok(second_part,"\n");
-                sprintf(secondInt,"%s",second_part);
-                char * first_part = strtok(secondInt,":");
-
-                if(strcmp(first_part,typeName) ==0 ){
-                    strtok(second_part,":");
-                    if(invariable(typeName) == 1){
-                        //printf("%s %s %s\n",typeName,var_col_element,base_col_element);
-                        fill_form(form_start,var_col_element,0,typeName);
-                        //display_all_form(form_start->forms);
-                    }
-                    while(second_part !=NULL){
-                        second_part = strtok(NULL,":");
-                        if(second_part != NULL){
-                            sprintf(tag_tab,"%s",second_part);
-                            int tag = getFlags(tag_tab);
-                            fill_form(form_start,var_col_element,tag,typeName);
-                            //display_all_form(form_start->forms);
-                        }
-                    }
-                }
-
-            }
-        };
-        free(tag_tab);
-    }
-    fclose(Dico);
-};
-
 // remplir children en vertical
-void remplir_arbre(p_node racine ,char * mot,char * typeName){
+void remplir_arbre(p_node racine ,char * mot,char * typeName, char * flechis, char * tagstring){
     int length = strlen(mot);
     // si le noeud RACINE n'a pas d'enfant
     p_child temp;
     if(racine->children == NULL){
         racine->children = create_child(racine->children,mot[0]);
         temp = racine->children;
-        for(int i =1;i<length-1;i++){
+        for(int i =1;i<length;i++){
             p_child temp2 = create_child(temp2,mot[i]);
             temp->node->children = temp2;
             temp = temp->node->children;
         };
-        p_child temp2 = create_child(temp2,mot[length-1]);
-        // remplir la dernière case et toutes les formes
-        temp = temp2;
+        //p_child temp2 = create_child(temp2,mot[length-1]);
+       // remplir la dernière case et toutes les formes
+        //temp = temp2;
 
     }else{
         p_node temp_node = racine;
@@ -259,13 +212,29 @@ void remplir_arbre(p_node racine ,char * mot,char * typeName){
         temp = child_horizontal(mot[length-1],temp_node);
         temp_node  = temp->node;
     }
-    // remplir la form si elle est null
-    if(temp->node->forms == NULL){
-        //printf(" %s",mot);
-        //add_Variant_By_Base_In_File(mot, typeName,temp->node);
+    if(invariable(typeName) == 1){
+        fill_form(temp->node,flechis,0,typeName);
         //display_all_form(temp->node->forms);
-        //printf("lol\n");
+    }else{
+        char * tag_tab = malloc(85*sizeof(char));
+
+        tagstring = strtok(tagstring,":");
+        sprintf(tag_tab,"%s",tagstring);
+        int tag = getFlags(tag_tab);
+        fill_form(temp->node,flechis,tag,typeName);
+        //display_all_form(temp->node->forms);
+
+        while(tagstring !=NULL){
+            tagstring = strtok(NULL,":");
+            if(tagstring != NULL){
+                sprintf(tag_tab,"%s",tagstring);
+                tag = getFlags(tag_tab);
+                fill_form(temp->node,flechis,tag,typeName);
+                //display_all_form(temp->node->forms);
+            }
+        }
     }
+
 }
 
 
@@ -305,13 +274,14 @@ t_tree extractWordByTypeInDictionnary(p_node racine ,char * typeOfTree){
             char* thirdCol = malloc((strlen(current_column))*sizeof(char));
             sprintf(thirdCol,"%s",strtok(current_column, "\n"));
             char* typePart = strtok(thirdCol,":");
+            current_column = strtok(NULL,"\n");
 
             // verifier si les types correspondent
             if(strcmp(typeOfTree,typePart) == 0){
                 // remplir l'arbre
-                //printf("-%s-",tableau[1]);
-                remplir_arbre(racine,tableau[1],typeOfTree);
-                //printf("\n");
+                char * flechis_col = malloc(sizeof(char)*30);
+                sprintf(flechis_col,"%s",tableau[0]);
+                remplir_arbre(racine,tableau[1],typeOfTree,flechis_col,current_column);
             }
 
         }
@@ -395,7 +365,6 @@ void  rechercher_un_mot(p_node root, char* type, char* mot  ){
             }
         }
 
-
     }
 }
 
@@ -423,3 +392,35 @@ void  rechercher_global_by_base(p_node root_Nom,p_node root_Pre, p_node root_Ver
 
 }
 
+int  beta_completion(p_node root){
+    p_node  pn = root;
+    // nouvelle condition si form != NULL
+    //si  children != NULL rappeler la fonction
+    if(pn->children == NULL){
+        p_form temporary = pn->forms;
+        if(count_forms(temporary) < 10) {
+            display_all_form(temporary);
+            return 1;
+        }
+        return 0;
+    }
+    else{
+        // sinon je créer un p node qui prendre
+        p_child temp = pn->children;
+        while(temp != NULL){
+            //printf("%c \n",temp->node->value);
+            beta_completion(temp->node);
+            temp = temp->next;
+        }
+    }
+}
+
+int count_forms(p_form formes){
+    p_form temp = formes;
+    int cpt = 0;
+    while(temp!=NULL){
+        cpt++;
+        temp = temp->next;
+    }
+    return cpt;
+};

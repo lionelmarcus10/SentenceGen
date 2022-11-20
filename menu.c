@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <time.h>
 #include "stdlib.h"
+#include "string.h"
+#include "file.h"
 #define Yes 1
 #define No 0
 void menu_principal(){
@@ -53,7 +55,7 @@ void menu_principal(){
             printf("3- Generer une phrase\n");
             printf("4- Essayez notre algorithme de complmetion automatique\n");
             printf("5- Rechercher un mot peu import qu'il soit une forme fléchis ou une forme de base\n");
-            printf("6-  Veuillez taper 6 pour quitter le programme \n") ;
+            printf("6-  Veuillez taper 6 pour quitter le programme \n");
             printf("Saissez un numero :  ");
             scanf("%d", &B);
             if (B != 1) {
@@ -71,23 +73,42 @@ void menu_principal(){
             case 2 :
                 extraire_un_mot_aleatoirement(Nom_Tree.root);
                 break;
-            case 3 :
+            case 3 : {
                 printf("\nNous vous proposons plusieures types de phrases \n");
                 do {
 
-                    printf("Veuillez taper le numero \n") ;
-                    printf("1- Nom - adjectif - verbe - Nom\n2- Nom - 'qui' - verbe - Nom -adjectif\n3- Nom - adjectif - verb - Nom\n4- Onomatopee - Nom  - verbe - adverbe\n5- Nom - verbe - verbe -  adjectif\n6- Nom - verbe - adverbe - adjectif\n7- Nom - verbe - Preposition - Nom\n8- Preposition - Nom - Preposition - Nom\n9- Pronoms  - Nom - Preposition - verbe\nSaisissez un numero :");
+                    printf("Veuillez taper le numero \n");
+                    printf("1- Nom - adjectif - verbe - Nom\n2- Nom - 'qui' - verbe - Nom -adjectif\n3- Interjection - Nom  - verbe - adjectif\n4- Nom - verbe - adverbe - adjectif\n5- Preposition - Nom - Preposition - Nom\n6- Pronoms  - Nom - Preposition - verbe\nSaisissez un numero :");
                     scanf("%d", &x);
-                    printf("%d",x);
+                    printf("%d", x);
                     if (x != 1) {
                         fflush(stdin);
                     }
                     printf("\n");
-                }while(x != 1 && x != 2 && x != 3 && x != 4 && x != 5 && x != 6 && x != 7 && x != 8 && x != 9 );
-                generate_sentence(x,Nom_Tree.root ,Pre_Tree.root, Ver_Tree.root, Adj_Tree.root, Int_Tree.root,
-                                  Det_Tree.root, Pro_Tree.root,Con_Tree.root,Abr_Tree.root,Adv_Tree.root,
-                                  Ono_Tree.root,QPro_Tree.root,Conj_Tree.root);
+                } while (x != 1 && x != 2 && x != 3 && x != 4 && x != 5 && x != 6 && x != 7 && x != 8 && x != 9);
+                generate_sentence(x, Nom_Tree.root, Pre_Tree.root, Ver_Tree.root, Adj_Tree.root, Int_Tree.root,
+                                  Det_Tree.root, Pro_Tree.root, Con_Tree.root, Abr_Tree.root, Adv_Tree.root,
+                                  Ono_Tree.root, QPro_Tree.root, Conj_Tree.root);
                 break;
+            }
+            case 4:{
+                int check = 0;
+                while(check == 0){
+                    printf("Veuillez saisir un mot");
+                    char * mot = malloc(24*sizeof(char ));
+                    mot= mot_a_chercher();
+                    p_child temp2 = Nom_Tree.root->children;
+                    p_node myroot = Nom_Tree.root;
+                    int x = strlen(mot);
+                    int i = 0;
+                    for(i;i<x;i++){
+                        temp2 = chercher_un_enfant(myroot,mot[i]);
+                        myroot = temp2->node;
+                    }
+                    check = beta_completion(myroot);
+                }
+                break;
+            }
             case 5 :
                     break;
             case 6 :

@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
+#include <unistd.h>
+#include "tag.h"
 //create node
 p_node create_node(p_node node ,char val){
     node = malloc(sizeof(t_node));
@@ -36,45 +37,22 @@ p_form create_form(char * mot, int tagbin){
 };
 
 // remplir / ajouter à un form
+// essayer avec un p_form puis un p_form *
 void fill_form(p_node form_start ,char* val,int tagbin,char * type){
     if(form_start->forms == NULL){
-        p_form temporary = create_form(val,tagbin);
-        form_start->forms = temporary;
-
+        form_start->forms = create_form(val,tagbin);
         //printf("Created from start %s %d %s\n",val,tagbin,type);
     }
     else{
+        //printf("Created from end %s %d %s\n",val,tagbin,type);
         p_form temp = form_start->forms;
-        //printf("--%s\n",temp->word);
-        int found = 0;
-        // comparer la première valeur
-        //printf("comparing : %s %s %d\n",val,temp->word,(strcmp(val,temp->word)));
-        if(strcmp(val,temp->word) == 0 && tagbin == temp->tag){
-            found = 1;
-            //printf("Found1 %s %d %s\n",val,tagbin,type);
+        while(temp->next != NULL){
+            temp = temp->next;
         }
-        // comparer la deuxième valeur jusqu'a l'avant dernière
-        while(temp->next != NULL && found == 0){
-            //printf("comparing : %d %d %d\n",tagbin,temp->tag,(tagbin == temp->tag));
-            if( strcmp(val,temp->word) == 0 && tagbin == temp->tag){
-                found = 1;
-                //printf("Found2 %s %d %s\n",val,tagbin,type);
-            }else{
-                temp = temp->next;
-            }
-        }
-        // comparer la dernière valeur
-        if(found == 0){
-            //printf("comparing : %d %d %d\n",tagbin,temp->tag,(tagbin == temp->tag));
-            if( strcmp(val,temp->word) == 0 && tagbin == temp->tag){
-                //printf("Found3 %s %d %s \n",val,tagbin,type);
-                found = 1;
-            }else{
-                temp->next = create_form(/*temp->next,*/val,tagbin);
-                //printf("created for end %s %d %s \n",val,tagbin,type);
-            }
-        }
+        // put into the queue
+        temp->next = create_form(val,tagbin);
     }
+
 };
 
 //afficher tous les form d'un noeud final
@@ -112,7 +90,7 @@ void display_all_children(p_child child){
 // a modifier
 void extraire_un_mot_aleatoirement(p_node root){
 
-    //srand(time(NULL));
+    srand(time(NULL)*getpid());
     p_child temp_child = root->children;
     char full[27] = "";
     while(count_children(temp_child) != 0 ){
@@ -133,7 +111,7 @@ void extraire_un_mot_aleatoirement(p_node root){
 
 char * random_word_string(p_node root){
 
-    //srand(time(0));
+    srand(time(NULL)*getpid());
     p_child temp_child = root->children;
     char full[27] = "";
     while(count_children(temp_child) != 0 ){
@@ -173,11 +151,158 @@ void generate_sentence(int choice,p_node root_Nom,p_node root_Pre, p_node root_V
             char * Adjectif = random_word_string(root_Adj);
             printf("La phrase genere est  : \n");
             printf("\n%s qui %s %s %s \n\n",Name,Verbe,Name2,Adjectif);
+            break;
+        }
+        case 3:{
+            char * Interjection = random_word_string(root_Int);
+            p_form Name = world_base_in_forms(root_Nom);
+            p_form Adjectif = search_in_forms(root_Adj,Name->tag);
+            // generer le verbe en fonction du nom
+            // afficher la phrase
+            printf("%s %s %s",Interjection,Name,Adjectif);
+            break;
+        }
+        case 4:{
+            char * Adverbe = random_word_string(root_Adv);
+            p_form Name = world_base_in_forms(root_Nom);
+            p_form Adjectif = search_in_forms(root_Adj,Name->tag);
+            // generer le verbe en fonction du nom
+            // afficher la phrase
+            break;
+        }
+        case 5:{
+            char * Preposition1 = random_word_string(root_Pre);
+            char * Name1 = random_word_string(root_Nom);
+            char * Preposition2 = random_word_string(root_Pre);
+            char * Name2 = random_word_string(root_Nom);
+            printf("\n%s %s %s %s\n\n",Preposition1, Name1, Preposition2,Name2);
+            break;
+        }
+        case 6:{
+            char * Preposition = random_word_string(root_Pre);
+            p_form Pronom = world_base_in_forms(root_Pro);
+            char * Name = random_word_string(root_Nom);
+            //p_form Name = search_in_forms(root_Nom,Pronom->tag);
+            printf("\n%s %s %s\n\n",Pronom->word,Preposition,Name);
+            break;
         }
         default:
             break;
     }
 };
+
+// generate base word and return his form structure
+p_form world_base_in_forms(p_node root){
+
+    srand(time(NULL)*getpid());
+    p_child temp_child = root->children;
+    char full[27] = "";
+    p_form temp_form;
+    while(count_children(temp_child) != 0 ){
+        int max = count_children(temp_child);
+        int x = rand() % max;
+        int i = 0;
+        while(i<x){
+            temp_child = temp_child->next;
+            i++;
+        }
+        strncat(full,&temp_child->node->value,1);
+        temp_form = temp_child->node->forms;
+        temp_child = temp_child->node->children;
+    }
+    // recuperer le pointeur sur sa forme
+    while( strcmp(temp_form->word,full) != 0 ){
+      temp_form = temp_form->next;
+    }
+    return temp_form;
+
+}
+
+// rechercher (generer) une forme flechis correspondante (verbe, nom, adj) en faisant l'accord
+p_form search_in_forms(p_node root,int tag ){
+    // generer un mot de base
+    srand(time(NULL)*getpid());
+    p_child temp_child = root->children;
+    char full[27] = "";
+    p_form temp_form;
+    while(count_children(temp_child) != 0 ){
+        int max = count_children(temp_child);
+        int x = rand() % max;
+        int i = 0;
+        while(i<x){
+            temp_child = temp_child->next;
+            i++;
+        }
+        strncat(full,&temp_child->node->value,1);
+        temp_form = temp_child->node->forms;
+        temp_child = temp_child->node->children;
+    }
+    // recuperer le pointeur sur sa forme
+    // temp_form->tag
+     // operation uniquement pour les verbes
+     int found =0;
+     while(found !=1){
+         if(verification_tag(tag,temp_form->tag) == 1){
+             return temp_form;
+         }else{
+             temp_form = temp_form->next;
+         }
+     }
+     return temp_form;
+}
+
+// comparer les tag sauf pour les verbes ( cas special )
+int verification_tag(int tag1, int tag2){
+    // si le tag1 correspond avec le tag 2
+      if(tag1 == tag2){
+          return 1;
+      }else{
+            // mas sg
+            if( ( (tag1 & (Mas_TB+SG_TB) ) == (Mas_TB+SG_TB) ) &&  ( tag2 & (InvGen_TB+SG_TB) == (InvGen_TB+SG_TB) || tag2 & (Mas_TB+InvPL_TB) == (Mas_TB+InvPL_TB)  )  ){
+                return 1;
+            }
+            // mas pl
+            else if( ( (tag1 & (Mas_TB+PL_TB) ) == (Mas_TB+PL_TB) ) &&  ( tag2 & (InvGen_TB+PL_TB) == (InvGen_TB+PL_TB) || tag2 & (Mas_TB+InvPL_TB) == (Mas_TB+InvPL_TB) )  ){
+                return 1;
+            }
+            // fem sg
+            else if( ( (tag1 & (Fem_TB+SG_TB) ) == (Fem_TB+SG_TB) ) &&  ( tag2 & (InvGen_TB+SG_TB) == (InvGen_TB+SG_TB) || tag2 & (Fem_TB+InvPL_TB) == (Fem_TB+InvPL_TB) )  ){
+                return 1;
+            }
+            // fem pl
+            else if( ( (tag1 & (Fem_TB+PL_TB) ) == (Fem_TB+PL_TB) ) &&  ( tag2 & (InvGen_TB+PL_TB) == (InvGen_TB+PL_TB) || tag2 & (Fem_TB+InvPL_TB) == (Fem_TB+InvPL_TB) )  ){
+                return 1;
+            }
+            // inv sg
+            else if( ( (tag1 & (InvGen_TB+SG_TB) ) == (InvGen_TB+SG_TB) ) &&  ( tag2 & (SG_TB) == (SG_TB) )  ){
+                return 1;
+            }
+            // inv pl
+            else if( ( (tag1 & (InvGen_TB+PL_TB) ) == (InvGen_TB+PL_TB) ) &&  ( tag2 & (PL_TB) == (PL_TB) )  ){
+                return 1;
+            }
+            // ingen + inv pl
+            else if( (tag1 & (InvGen_TB+InvPL_TB) ) == (InvGen_TB+InvPL_TB) ){
+                return 1;
+            }
+            else if( ( (tag1 & (InvPL_TB+Mas_TB) ) == (InvPL_TB+Mas_TB) ) && (tag2 & (Mas_TB)) == Mas_TB ){
+                return 1;
+            }else if( ( (tag1 & (InvPL_TB+Fem_TB) ) == (InvPL_TB+Fem_TB) ) && (tag2 & (Fem_TB)) == Fem_TB ){
+                return 1;
+            }
+      }
+      return 0;
+}
+
+// conjugaison
+void conjugaison(){
+    // prendre la structure du mot (form struct)
+
+    // generer et rechercher un mot correspondant à son tag dans les flechis
+
+    // retourner ce mot
+}
+
 
 // afficher tous les mots enfants de l'arbre
 void display_all_word_in_tree_by_root(p_node root){
